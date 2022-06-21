@@ -19,6 +19,17 @@ class NimGame:
 
         return False
 
-    def get_board(self):
-        """ Access board state """
-        return self.board
+    def get_next_states(self):
+        """
+        Find all possible moves from the current state
+        """
+        next_states = []
+
+        # Find every combination of piles and num to remove from piles
+        for x in range(len(self.board)):
+            for y in range(1, self.board[x] + 1):
+
+                # Append every resulting 
+                next_state = self.board[:]
+                next_state[x] = next_state[x] - y
+                next_states.append(next_state)

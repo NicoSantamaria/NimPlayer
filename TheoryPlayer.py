@@ -1,9 +1,16 @@
 """
 NOTES:
 Can there be more than one winning move with more than two piles?
+
+From Math Stack Exchange: 
+Therefore, there are always an odd number of winning moves, and at most one such move in each pile.
+
+So for a game of two piles, there is only one winning move. But in games of three piles, for instance,
+there might be 1 or 3 winning moves. And so on for larger piles numbers. 
 """
 
 class TheoryPlayer:
+
     def __init__(self, current_board):
         self.board = current_board
 
@@ -53,8 +60,6 @@ def nim_sum(nums):
     :param nums: (list) values to sum
     return: (int) binary digital sum
     """
-
-    # Base case, return additive identity
     if nums == []:
         return 0
 
