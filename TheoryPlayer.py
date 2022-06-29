@@ -3,18 +3,37 @@ NOTES:
 Can there be more than one winning move with more than two piles?
 
 From Math Stack Exchange: 
-Therefore, there are always an odd number of winning moves, and at most one such move in each pile.
+There are always an odd number of winning moves, and at most one such move in each pile.
 
 So for a game of two piles, there is only one winning move. But in games of three piles, for instance,
 there might be 1 or 3 winning moves. And so on for larger piles numbers. 
 """
+from copy import deepcopy
+
 
 class TheoryPlayer:
 
-    def __init__(self, current_board):
-        self.board = current_board
+    def __init__(self, nim_board, turn=True):
+        self.board = nim_board
+        self.player_turn = turn
 
-    def get_winning_move(self):
+    def change_player_turn(self):
+        self.player_turn = not self.player_turn
+
+    def make_move(self, pile, num):
+        """
+        If move is valid, removes num from pile.
+        Otherwise, prints error message.
+        """
+        self.change_player_turn()
+
+        if 0 <= pile < len(self.board) - 1:
+            if num < self.board[pile]:
+                self.board[pile] = self.board[pile] - num
+
+        print("That is not a valid move.")
+
+    def get_next_move(self):
         """
         Find the moves that result in a board with nim-sum zero. Returns -1, -1 if
         the position is not winning
@@ -38,20 +57,15 @@ class TheoryPlayer:
 
         return -1, -1
 
-    def make_winning_move(self):
+    def get_next_board(self):
         """
-        Mutate self.board to the resulting state of 
-        the board after the winning move is made.
-        -1 if the position is losing.
-        return: None
+        Returns the board that results after making the next move
         """
-        pile_index, num_to_remove = self.get_winning_move()
+        next_board = deepcopy(self)
+        pile, num = next_board.get_next_move()
+        next_board.make_move(pile, num)
 
-        if not (pile_index, num_to_remove) == (-1, -1):
-            self.board[pile_index] = self.board[pile_index] - num_to_remove
-
-        else:
-            print("This is a losing position-- a winning move cannot be made.")
+        return [next_board.board]
 
 
 def nim_sum(nums):
